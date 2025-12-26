@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.cdnfonts.com/css/minecraftia');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-900 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-minecraft-green/30 rounded-full hover:bg-minecraft-green/50;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-minecraft-green to-minecraft-blue text-minecraft-dark font-bold rounded-xl hover:opacity-90 transition;
+  }
+
+  .card-glass {
+    @apply bg-minecraft-dark/50 backdrop-blur-sm border border-minecraft-green/30 rounded-2xl;
+  }
+
+  .minecraft-text {
+    font-family: 'Minecraftia', monospace;
+  }
+
+  .pixel-text {
+    font-family: 'Press Start 2P', cursive;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Minecraft cursor */
+.minecraft-cursor {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="%2355FF55" opacity="0.3"/><rect x="12" y="12" width="8" height="8" fill="%2355FF55"/></svg>') 16 16, pointer;
+}
