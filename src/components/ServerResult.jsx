@@ -259,4 +259,121 @@ const ServerResult = ({ data, realTimeUpdate }) => {
                 </div>
               </div>
               <div className="bg-gray-900/50 p-4 rounded-xl">
-                <div className="text-sm text
+                <div className="text-sm text-gray-400 mb-1">API Version</div>
+                <div className="text-xl font-bold">v{result.debug?.apiversion || '1.0'}</div>
+              </div>
+            </div>
+
+            {/* Map Info */}
+            {result.map && (
+              <div className="bg-gray-900/30 p-4 rounded-xl">
+                <h4 className="font-bold mb-2 flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clipRule="evenodd"/>
+                  </svg>
+                  Current Map
+                </h4>
+                <p className="text-gray-300">{result.map.clean || result.map.raw}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'players' && (
+          <div>
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-lg font-bold">Online Players</h4>
+                <div className="text-2xl font-bold">
+                  {result.players?.online || 0}<span className="text-lg text-gray-400">/{result.players?.max || 0}</span>
+                </div>
+              </div>
+              {renderPlayers()}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'plugins' && (
+          <div>
+            <h4 className="text-lg font-bold mb-4">Plugins & Mods</h4>
+            {renderPluginsMods()}
+          </div>
+        )}
+
+        {activeTab === 'history' && (
+          <div>
+            <h4 className="text-lg font-bold mb-4">Player Activity (Last 6 Hours)</h4>
+            <div className="h-64">
+              <Line data={historyData} options={chartOptions} />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'debug' && (
+          <div className="space-y-4">
+            <h4 className="text-lg font-bold">Debug Information</h4>
+            <div className="bg-black/50 p-4 rounded-lg overflow-x-auto">
+              <pre className="text-sm text-gray-300">
+                {JSON.stringify(result.debug, null, 2)}
+              </pre>
+            </div>
+            
+            {result.ndiicloud_meta && (
+              <div className="bg-black/50 p-4 rounded-lg">
+                <h5 className="font-bold mb-2 text-minecraft-green">NdiiClouD Meta</h5>
+                <pre className="text-sm text-gray-300">
+                  {JSON.stringify(result.ndiicloud_meta, null, 2)}
+                </pre>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="p-6 border-t border-gray-800 bg-gray-900/20">
+        <div className="flex flex-wrap gap-3">
+          <button 
+            onClick={() => navigator.clipboard.writeText(JSON.stringify(result, null, 2))}
+            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center transition"
+          >
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
+              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
+            </svg>
+            Copy JSON
+          </button>
+          
+          <button 
+            onClick={() => window.open(`https://mcsrvstat.us/server/${result.ip}:${result.port}`, '_blank')}
+            className="px-4 py-2 bg-blue-900/30 hover:bg-blue-800/30 text-blue-300 rounded-lg flex items-center transition"
+          >
+            Compare with mcsrvstat.us
+          </button>
+          
+          <button 
+            onClick={() => window.open(`/api/v1/icon/${result.ip}:${result.port}`, '_blank')}
+            className="px-4 py-2 bg-purple-900/30 hover:bg-purple-800/30 text-purple-300 rounded-lg flex items-center transition"
+          >
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd"/>
+            </svg>
+            Download Icon
+          </button>
+          
+          <button 
+            onClick={() => window.open(`/api/v1/history/${result.ip}:${result.port}`, '_blank')}
+            className="px-4 py-2 bg-green-900/30 hover:bg-green-800/30 text-green-300 rounded-lg flex items-center transition"
+          >
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
+            </svg>
+            View History
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ServerResult;
